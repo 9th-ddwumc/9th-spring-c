@@ -1,6 +1,5 @@
 package com.example.umc9th2.domain.member.entity;
 
-import com.example.umc9th2.domain.member.enums.FoodName;
 import com.example.umc9th2.domain.member.enums.TermName;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +19,6 @@ public class Term {
 
     @Column(name = "name")
     @Enumerated(EnumType.STRING)
-    private FoodName name;
+    private TermName name;
 
 }
