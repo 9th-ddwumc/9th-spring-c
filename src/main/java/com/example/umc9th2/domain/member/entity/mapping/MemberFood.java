@@ -27,5 +27,4 @@ public class MemberFood {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id", nullable = false)
     private Food food;
-
 }

@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Builder
@@ -23,6 +21,9 @@ public class MemberMission extends BaseEntity {
     @Column(name = "member_mission_id")
     private Long id;
 
+    @Column(name = "is_complete", nullable = false)
+    private Boolean isComplete;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -30,7 +31,4 @@ public class MemberMission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
-
-    @Column(name = "is_complete", nullable = false)
-    private Boolean isComplete;
 }
