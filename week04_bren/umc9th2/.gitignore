@@ -39,3 +39,17 @@ out/
 # QueryDSL generated
 /build/generated/
 /build/**/querydsl/
+
+# Gradle
+.gradle/
+**/build/
+
+# QueryDSL generated
+**/generated/querydsl/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
