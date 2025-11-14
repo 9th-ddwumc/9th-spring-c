@@ -17,17 +17,17 @@ public class Store extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 120)
+    @Column(nullable = true, length = 120)
     private String name;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String address;
 
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "region_id", nullable = false)
+    @JoinColumn(name = "region_id", nullable = true)
     private Region region;
 
     public Store(String name, String address, Region region) {

@@ -26,7 +26,7 @@ public class Mission extends BaseEntity {
     @Column(nullable = false, length = 500)
     private String description;
 
-    @Column(name = "is_active", nullable = false)
+    @Column(name = "is_active", nullable = true)
     private boolean active = true;
 
     @Column(name = "sort_order", nullable = false)
