@@ -1,11 +1,13 @@
 package com.example.umc9th2.service;
 
+import com.example.umc9th2.converter.MissionConverter;
 import com.example.umc9th2.domain.mission.Mission;
 import com.example.umc9th2.domain.mission.MissionStatus;
 import com.example.umc9th2.domain.mission.UserMissionStatus;
 import com.example.umc9th2.domain.store.Store;
 import com.example.umc9th2.domain.user.User;
 import com.example.umc9th2.dto.HomeMissionCardDto;
+import com.example.umc9th2.dto.MissionResDTO;
 import com.example.umc9th2.repository.MissionRepository;
 import com.example.umc9th2.repository.StoreRepository;
 import com.example.umc9th2.repository.UserMissionStatusRepository;
@@ -13,6 +15,7 @@ import com.example.umc9th2.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +35,17 @@ public class MissionService {
     public Page<HomeMissionCardDto> getOpenMissionsByRegion(Long regionId, Pageable pageable) {
         return missionRepository.findOpenByRegion(regionId, pageable);
     }
+    // page는 1부터 들어오고, 내부에선 0-based 로 변환
+    public MissionResDTO.StoreMissionListDTO getStoreMissions(Long storeId, int page) {
+        PageRequest pageable = PageRequest.of(page - 1, 10); // 한 페이지 10개 고정
 
-    // ✅ 추가: 가게의 미션을 "도전 중" 상태에 추가 (미션 도전하기)
+        Page<Mission> result =
+                missionRepository.findByStoreIdOrderBySortOrderDescIdDesc(storeId, pageable);
+
+        return MissionConverter.toStoreMissionListDTO(result);
+    }
+
+    //  추가: 가게의 미션을 "도전 중" 상태에 추가 (미션 도전하기)
     @Transactional
     public Long challengeMission(Long storeId, Long missionId) {
 

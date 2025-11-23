@@ -35,4 +35,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
       order by m.sortOrder desc, m.id desc
     """)
     List<Mission> findAllByStoreIdWithStore(@Param("storeId") Long storeId);
+
+    // ✅ 2번 API용: 특정 가게의 미션 목록 + 정렬 + 페이징
+    Page<Mission> findByStoreIdOrderBySortOrderDescIdDesc(Long storeId, Pageable pageable);
+
 }

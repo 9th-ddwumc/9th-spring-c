@@ -1,13 +1,13 @@
-// TODO: Chapter7 응답 통일 테스트
 package com.example.umc9th2.controller;
 
-import com.example.umc9th2.dto.ReviewSearchRequest;
-import com.example.umc9th2.dto.ReviewSummaryDto;
+import com.example.umc9th2.dto.ReviewResDTO;
 import com.example.umc9th2.global.apiPayload.ApiResponse;
 import com.example.umc9th2.global.apiPayload.code.GeneralSuccessCode;
+import com.example.umc9th2.global.validation.annotation.ValidPage;
 import com.example.umc9th2.service.ReviewQueryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,26 +16,41 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ReviewQueryController {
 
-    private final ReviewQueryService service;
+    // ❗ 기존 private final ReviewQueryService service; 같은 필드는 전부 지우고 이거 하나만
+    private final ReviewQueryService reviewQueryService;
 
-    // 내가 쓴 리뷰 조회
-    // GET /api/reviews/my?userId=1&store=...&starBand=...&sort=recent&page=0&size=10
+    /**
+     * 미션 API 1 — 내가 작성한 리뷰 목록 조회
+     * - userId: 조회할 유저 ID
+     * - page: 1 이상, 기본값 1
+     */
+    @Operation(
+            summary = "[미션] 내가 작성한 리뷰 목록 조회",
+            description = "특정 사용자가 작성한 리뷰를 페이지네이션으로 조회합니다. page는 1부터 시작합니다."
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "리뷰 목록 조회 성공"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 page 파라미터"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "서버 내부 에러"
+            )
+    })
+
     @GetMapping("/my")
-    public ResponseEntity<ApiResponse<Page<ReviewSummaryDto>>> getMyReviews(
+    public ResponseEntity<ApiResponse<ReviewResDTO.ReviewPreViewListDTO>> getMyReviews(
             @RequestParam Long userId,
-            @RequestParam(required = false) String store,
-            @RequestParam(required = false) Integer starBand,
-            @RequestParam(defaultValue = "recent") String sort,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "1") @ValidPage Integer page
     ) {
-        ReviewSearchRequest req = new ReviewSearchRequest();
-        req.setUserId(userId);
-        req.setStore(store);
-        req.setStarBand(starBand);
-        req.setSort(sort);
-
-        Page<ReviewSummaryDto> result = service.searchMyReviews(req, page, size);
+        //  파라미터 실제 사용
+        ReviewResDTO.ReviewPreViewListDTO result =
+                reviewQueryService.getMyReviews(userId, page);
 
         GeneralSuccessCode code = GeneralSuccessCode.OK;
 
