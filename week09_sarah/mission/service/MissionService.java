@@ -1,10 +1,13 @@
 package com.example.umc9th2.domain.mission.service;
 
+import com.example.umc9th2.domain.member.repository.MemberRepository;
 import com.example.umc9th2.domain.mission.dto.res.MissionCompleteResponseDto;
 import com.example.umc9th2.domain.mission.dto.res.MissionInProgressDto;
 import com.example.umc9th2.domain.mission.entity.MissionChallenge;
 import com.example.umc9th2.domain.mission.repository.MissionChallengeRepository;
 import com.example.umc9th2.domain.mission.repository.MissionRepository;
+import com.example.umc9th2.global.apiPayload.code.MemberErrorCode;
+import com.example.umc9th2.global.apiPayload.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,8 +22,13 @@ import java.time.LocalDate;
 public class MissionService {
 
     private final MissionChallengeRepository missionChallengeRepository;
+    private final MemberRepository memberRepository;
 
     public Page<MissionInProgressDto> getMyInProgressMissions(Long memberId, int page) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new GeneralException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page<MissionChallenge> mcPage =
                 missionChallengeRepository.findByMemberIdAndStatus(memberId, "in-progress", pageable);
