@@ -1,6 +1,7 @@
 package com.example.umc9th2.domain.user;
 
 import com.example.umc9th2.domain.common.BaseEntity;
+import com.example.umc9th2.global.auth.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,10 +26,15 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
+    private UserRole role;
+
     // 생성자(필수값만)
-    public User(String email, String passwordHash, String nickname) {
+    public User(String email, String passwordHash, String nickname, UserRole role) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.nickname = nickname;
+        this.role = role;
     }
 }
