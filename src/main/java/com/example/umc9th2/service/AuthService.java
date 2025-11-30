@@ -23,7 +23,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     // JWT 미션에서만 필요 (세션 브랜치에서는 null로 두거나 생성자 제거)
-//    private final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public UserResDTO.SignUpDTO signUp(UserReqDTO.SignUpDTO dto) {
@@ -41,18 +41,18 @@ public class AuthService {
     }
 
     // JWT 로그인용
-//    public UserResDTO.LoginDTO login(UserReqDTO.LoginDTO dto) {
-//
-//        User user = userRepository.findByEmail(dto.email())
-//                .orElseThrow(() -> new GeneralException(GeneralErrorCode.NOT_FOUND));
-//
-//        if (!passwordEncoder.matches(dto.password(), user.getPasswordHash())) {
-//            throw new GeneralException(GeneralErrorCode.UNAUTHORIZED);
-//        }
-//
-//        CustomUserDetails userDetails = new CustomUserDetails(user);
-//        String accessToken = jwtUtil.createAccessToken(userDetails);
-//
-//        return UserConverter.toLoginDTO(user, accessToken);
-//    }
+    public UserResDTO.LoginDTO login(UserReqDTO.LoginDTO dto) {
+
+        User user = userRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new GeneralException(GeneralErrorCode.NOT_FOUND));
+
+        if (!passwordEncoder.matches(dto.password(), user.getPasswordHash())) {
+            throw new GeneralException(GeneralErrorCode.UNAUTHORIZED);
+        }
+
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+        String accessToken = jwtUtil.createAccessToken(userDetails);
+
+        return UserConverter.toLoginDTO(user, accessToken);
+    }
 }

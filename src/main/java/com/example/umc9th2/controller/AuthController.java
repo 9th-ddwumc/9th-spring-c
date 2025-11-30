@@ -27,13 +27,13 @@ public class AuthController {
     }
 
     // JWT 로그인 (세션 미션에서는 안 써도 됨)
-//    @PostMapping("/login")
-//    public ApiResponse<UserResDTO.LoginDTO> login(
-//            @RequestBody @Valid UserReqDTO.LoginDTO dto
-//    ) {
-//        return ApiResponse.onSuccess(
-//                GeneralSuccessCode.OK,
-//                authService.login(dto)
-//        );
-//    }
+    @PostMapping("/login")
+    public ApiResponse<UserResDTO.LoginDTO> login(
+            @RequestBody @Valid UserReqDTO.LoginDTO dto
+    ) {
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                authService.login(dto)
+        );
+    }
 }
