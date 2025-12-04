@@ -28,7 +28,7 @@ public class Store extends BaseEntity {
     private String name;
 
     @Column(name = "manager_number", length = 20)
-    private Long managerNumber;
+    private String managerNumber;
 
     @Column(name = "address_detail", length = 255)
     private String addressDetail;
