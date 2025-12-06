@@ -8,6 +8,7 @@ import com.example.umc9th2.domain.member.enums.Gender;
 import com.example.umc9th2.domain.member.enums.SocialType;
 import com.example.umc9th2.domain.review.entity.Review;
 import com.example.umc9th2.global.entity.BaseEntity;
+import com.example.umc9th2.global.auth.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,13 +31,12 @@ public class Member extends BaseEntity {
     @Column(name = "member_id", nullable = false)
     private Long id;
 
-    @Column(name = "name", length = 3, nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private Gender gender = Gender.NONE;
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
 
     @Column(name = "birth", nullable = false)
     private LocalDate birth;
@@ -55,10 +55,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    @Column(name = "point", nullable = false)
-    private Integer point;
-
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone_number")
@@ -75,4 +72,15 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer point = 0;
+
 }
