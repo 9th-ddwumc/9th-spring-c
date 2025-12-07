@@ -1,18 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.6'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-description = 'umc9th'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+version = '1.0.0'
+sourceCompatibility = '17'
 
 configurations {
     compileOnly {
@@ -59,21 +53,14 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-    enabled = false
 }
 
 // QueryDSL 관련 설정
 // generated/querydsl 폴더 생성 & 삽입
-def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
+def querydslDir = "src/main/generated"
 
-// 소스 세트에 생성 경로 추가 (구체적인 경로 지정)
-sourceSets {
-    main.java.srcDirs += [ querydslDir ]
-}
-
-// 컴파일 시 생성 경로 지정
-tasks.withType(JavaCompile).configureEach {
-    options.generatedSourceOutputDirectory.set(querydslDir)
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 }
 
 // clean 태스크에 생성 폴더 삭제 로직 추가
