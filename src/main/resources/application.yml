@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: "umc9th2"
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/{week11_sarah}?serverTimezone=Asia/Seoul
+    username: root
+    password: { Muxchk@01033 }
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    sql:
+      init:
+        mode: never
+  jpa:
+    database: mysql # 사용할 데이터베이스 유형 지정 (MySQL)
+    database-platform: org.hibernate.dialect.MySQLDialect # Hibernate에서 사용할 MySQL 방언(dialect) 설정
+    show-sql: true # 실행된 SQL 쿼리를 콘솔에 출력할지 여부 설정
+    hibernate:
+      ddl-auto: create # 애플리케이션 실행 시 데이터베이스 스키마의 상태를 설정
+    properties:
+      hibernate:
+        format_sql: true # 출력되는 SQL 쿼리를 보기 좋게 포맷팅
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-authentication-method: client_secret_post
+            client-id: { f8a38cb353b6b80ff2fad06041b39e18 }
+            client-secret: { ClfJNEAUCppusMWLtdHAzfPB3LGCC2sD }
+            redirect-uri: http://{ 3.35.9.25 }:8080/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            scope: profile_nickname
+            client-name: Kakao
+jwt:
+   token:
+    secretKey: ZGh3YWlkc2F2ZXdhZXZ3b2EgMTM5ZXUgMDMxdWMyIHEyMiBAIDAgKTJFVio=
+    expiration:
+      access: 14400000
